@@ -11,6 +11,8 @@ import android.bluetooth.*;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+//  http://dev.classmethod.jp/etc/22853/　→ハンドラとルーパー処理に関する記事
+//  別スレッドから、画面更新処理をするときはメッセージキューのしくみをつかう
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +31,10 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 //    BluetoothAdapterクラスのLeScanCallbackインターフェイスを実装
     /** BLE 機器スキャンタイムアウト (ミリ秒) */
     private static final long SCAN_PERIOD = 10000;
+//   long = (-9223372036854775808L ～ 9223372036854775807L)が表現範囲
+//  唯一の使用機会はpublic static finalフィールドとして「定数値」フィールドを宣言する方法である。
+//  この場合、フィールドの値は変更されないため、複数のインスタンスからアクセスされても問題ない。
+//  staticフィールドはこのためにあると考えてもいいだろう。
     /** 検索機器の機器名 */
     private static final String DEVICE_NAME = "Sensor";
     /** 対象のサービスUUID */
@@ -39,7 +45,10 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
     private static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
     private static final String TAG = "BLE_Test";
+//    private final static String TAG = クラス.class.getSimpleName();
     private BleStatus mStatus = BleStatus.DISCONNECTED;
+//    非パブリックなインスタンスフィールドは頭文字を m とする→変数＝フィールド
+//    スタティックフィールドは頭文字を s とする。
     private Handler mHandler;
     private BluetoothAdapter mBluetoothAdapter;
 //    下記二つのクラスをインポートしたからそれに対して宣言をする
