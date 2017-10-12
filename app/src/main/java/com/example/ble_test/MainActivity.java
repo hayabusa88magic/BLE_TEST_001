@@ -5,9 +5,9 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import android.app.Activity;
 import android.bluetooth.*;
+//＊は関係のあるものすべて
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +17,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import java.util.UUID;
 
 //インプリメントとはインターフェイスの実装クラスを宣言するための予約語
@@ -50,6 +49,8 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 //    非パブリックなインスタンスフィールドは頭文字を m とする→変数＝フィールド
 //    スタティックフィールドは頭文字を s とする。
     private Handler mHandler;
+//    Handlerインスタンスを生成したスレッドへイベントを送るための仕組みなのである。
+//    別スレッドでキューを管理するためのクラス
     private BluetoothAdapter mBluetoothAdapter;
 //    下記二つのクラスをインポートしたからそれに対して宣言をする
 //   import android.bluetooth.BluetoothAdapter;
@@ -77,6 +78,7 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 //      mBluetoothManagerについてのみ更新をかける意味のようだ
 
         findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
+//            https://qiita.com/HideMatsu/items/2e6caec8265bcf2a2dcb　→ボタン処理の書き方
 //            button.setOnClickListener(new OnClickListener() {
 //            findViewByIdで特定したオブジェクト→ボタンのbtn_connectに対してクリック処理を設定
 //            Viewクラスの抽象クラスOnClickListener()を設定
@@ -92,6 +94,7 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
             }
         });
         findViewById(R.id.btn_disconnect).setOnClickListener(new View.OnClickListener() {
+//            https://www.javadrive.jp/android/event/index1.html →オンクリックリスナー
             @Override
             public void onClick(View v) {
                 disconnect();
@@ -99,6 +102,7 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
         });
 
         mStatusText = (TextView)findViewById(R.id.text_status);
+//        キャスト→先頭の（）はキャスト
 
         mHandler = new Handler() {
             @Override
@@ -135,7 +139,7 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
     }
 
     @Override
-    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+    public void onLeScan(BluetoothDevice device, int rssi,byte[] scanRecord ) {
         Log.d(TAG, "device found: " + device.getName());
         if (DEVICE_NAME.equals(device.getName())) {
             setStatus(BleStatus.DEVICE_FOUND);
@@ -222,7 +226,13 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
 
             if (DEVICE_BUTTON_SENSOR_CHARACTERISTIC_UUID.equals(characteristic.getUuid().toString())) {
                 Byte value = characteristic.getValue()[0];
-                boolean left = (0 < (value & 0x02)); boolean right = (0 < (value & 0x01)); updateButtonState(left, right); } } };
+                boolean left = (0 < (value & 0x02));
+                boolean right = (0 < (value & 0x01));
+                updateButtonState(left, right);
+            }
+        }
+    };
+
     private void updateButtonState(final boolean left, final boolean right) {
         runOnUiThread(new Runnable() {
             @Override public void run() {
@@ -233,18 +243,40 @@ public class MainActivity extends Activity implements BluetoothAdapter.LeScanCal
             }
         });
     }
+
+
     private void setStatus(BleStatus status) {
-        mStatus = status; mHandler.sendMessage(status.message());
-    }
+//        setStatusメソッドの実装
+//        戻り型　メソッド名　（引数型　引数名）　｛ メソッド本体 ｝；
+//  （引数型　引数名）
+//  メソッド内に値を引き継ぐ必要がある場合記載します。引数型は引き継ぐ値の型、
+//  引数名は引き継ぐ値をメソッド内で使用する際の変数名を表します。引き継ぐ値がない場合は単に( )を記載します。
+        mStatus = status;
+        mHandler.sendMessage(status.message());
+//        メソッド呼び出し
+}
 
     private enum BleStatus {
-        DISCONNECTED, SCANNING, SCAN_FAILED, DEVICE_FOUND,
-        SERVICE_NOT_FOUND, SERVICE_FOUND, CHARACTERISTIC_NOT_FOUND,
-        NOTIFICATION_REGISTERED, NOTIFICATION_REGISTER_FAILED, CLOSED ;
+//        https://qiita.com/hkusu/items/0996735553580bfabbdb →enumの使い方
+        DISCONNECTED,
+        SCANNING,
+        SCAN_FAILED,
+        DEVICE_FOUND,
+        SERVICE_NOT_FOUND,
+        SERVICE_FOUND,
+        CHARACTERISTIC_NOT_FOUND,
+        NOTIFICATION_REGISTERED,
+        NOTIFICATION_REGISTER_FAILED, CLOSED ;
 
         public Message message() {
+//           メソッドの実装
+//           [修飾子] 戻り値のデータ型 メソッド名(引数1, 引数2, ....){}
         Message message = new Message();
+//           オブジェクト化
+//           クラス名 変数名 = new クラス名(引数);　https://www.javadrive.jp/start/about/index2.html
+
         message.obj = this;
+//            メッセージの中のobj
         return message;
         }
     }
