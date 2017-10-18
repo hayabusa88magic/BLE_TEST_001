@@ -28,7 +28,15 @@ import java.util.UUID;
 //メソッド→　クラス内に「戻り値の型 メソッド名( 引数の型 引数の変数名 ){ 実装 }」という書式でメソッドを作ることができる。
 public class MainActivity extends Activity implements BluetoothAdapter.LeScanCallback {
 //    BluetoothAdapterクラスのLeScanCallbackインターフェイスを実装
-    /** BLE 機器スキャンタイムアウト (ミリ秒) */
+//    インタフェースは1つのクラスに対し、複数実装することもできます
+//    クラスがextendsを使用する場合は、implementsはextendsの後に指定します。
+//    http://www.javaroad.jp/java_interface3.htm
+//    インタフェースを実装したクラスでは、インタフェースで宣言されたメンバ変数を「単純名」で参照できます。インタフェースを実装していないクラスからは「インタフェース名．単純名」で参照する必要があります。
+//    インタフェースで定義されたメソッドを参照する場合、必ずそのインタフェースを実装したクラスのオブジェクトを通して参照する必要があります。
+//    Java インタフェースとは何か 内容に抽象メソッドしか持たないクラスのようなものをインタフェースと呼びます。 クラスと並んで、パッケージのメンバーとして存在します。
+//    インタフェースはクラスによって実装 (implements) され、実装クラスはインタフェースで宣言されている抽象メソッドを実装します
+//     https://www.gixo.jp/blog/5159/
+        /** BLE 機器スキャンタイムアウト (ミリ秒) */
     private static final long SCAN_PERIOD = 10000;
 //   long = (-9223372036854775808L ～ 9223372036854775807L)が表現範囲
 //  唯一の使用機会はpublic static finalフィールドとして「定数値」フィールドを宣言する方法である。
