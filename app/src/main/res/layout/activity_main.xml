@@ -47,25 +47,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="LEFT"
-            android:id="@+id/left"
-            android:layout_gravity="center"
-            android:padding="20dp"/>
-
         <View android:layout_width="60dp"
             android:layout_height="match_parent"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="RIGHT"
-            android:id="@+id/right"
-            android:layout_gravity="center"
-            android:padding="20dp"/>
     </LinearLayout>
 </RelativeLayout>
